@@ -27,15 +27,18 @@ public class VoteContract implements Contract {
     }
 
     @Payable
-    public VoteEntity create(String title, String desc, String[] items) {
+    public VoteEntity create(String title, String desc, String[] items, long startTime, long endTime, boolean isMultipleSelect, int maxSelectCount, boolean voteCanModify) {
         VoteEntity voteEntity = baseVote.create(title, desc, items);
+
+        VoteConfig config = new VoteConfig(startTime, endTime, isMultipleSelect, maxSelectCount, voteCanModify);
+        baseVote.init(voteEntity.getId(), config);
         return voteEntity;
     }
 
-    public boolean init(long voteId, long startTime, long endTime, boolean isMultipleSelect, int maxSelectCount, boolean voteCanModify) {
-        VoteConfig config = new VoteConfig(startTime, endTime, isMultipleSelect, maxSelectCount, voteCanModify);
-        return baseVote.init(voteId, config);
-    }
+//    public boolean init(long voteId, long startTime, long endTime, boolean isMultipleSelect, int maxSelectCount, boolean voteCanModify) {
+//        VoteConfig config = new VoteConfig(startTime, endTime, isMultipleSelect, maxSelectCount, voteCanModify);
+//        return baseVote.init(voteId, config);
+//    }
 
     public boolean vote(long voteId, long[] itemIds) {
         return baseVote.vote(voteId, itemIds);

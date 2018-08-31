@@ -31,7 +31,10 @@ public class VoteContract implements Contract {
         VoteEntity voteEntity = baseVote.create(title, desc, items);
 
         VoteConfig config = new VoteConfig(startTime, endTime, isMultipleSelect, maxSelectCount, voteCanModify);
-        baseVote.init(voteEntity.getId(), config);
+        boolean success = baseVote.init(voteEntity.getId(), config);
+
+        Utils.require(success);
+
         return voteEntity;
     }
 

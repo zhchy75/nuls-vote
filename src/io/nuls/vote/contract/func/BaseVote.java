@@ -157,7 +157,7 @@ public class BaseVote implements VoteInterface {
 
         require(voteId > 0L);
 
-        onlyOwner(voteId);
+        //onlyOwner(voteId);
 
         VoteEntity voteEntity = votes.get(voteId);
 

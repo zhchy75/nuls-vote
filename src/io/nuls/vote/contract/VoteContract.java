@@ -22,10 +22,6 @@ public class VoteContract implements Contract {
         baseVote = new BaseVote(BigInteger.valueOf(minRecognizance));
     }
 
-    public void _payable() {
-        Utils.revert();
-    }
-
     @Payable
     public VoteEntity create(String title, String desc, String[] items, long startTime, long endTime, boolean isMultipleSelect, int maxSelectCount, boolean voteCanModify) {
         VoteEntity voteEntity = baseVote.create(title, desc, items);

@@ -27,18 +27,18 @@ public class BaseVote implements VoteInterface {
     protected Map<Long, Map<Address, List<Long>>> voteRecords = new HashMap<Long, Map<Address, List<Long>>>();
 
     public BaseVote(BigInteger minRecognizance) {
-        require(minRecognizance.compareTo(BigInteger.valueOf(0)) > 0);
+        require(minRecognizance.compareTo(BigInteger.valueOf(0)) > 0, "minRecognizance need greater than zero");
         this.minRecognizance = minRecognizance;
     }
 
     public VoteEntity create(String title, String desc, String[] items) {
 
-        require(items != null && items.length > 0);
-        require(title != null);
-        require(desc != null);
+        require(items != null && items.length > 0, "items can not empty");
+        require(title != null, "title can not empty");
+        require(desc != null, "desc can not empty");
 
         BigInteger value = Msg.value();
-        require(value.compareTo(minRecognizance) >= 0);
+        require(value.compareTo(minRecognizance) >= 0, "value need greater than " + minRecognizance);
 
         Long voteId = Long.valueOf(votes.size() + 1);
 
@@ -71,24 +71,24 @@ public class BaseVote implements VoteInterface {
 
     public boolean init(long voteId, VoteConfig config) {
 
-        require(voteId > 0L);
-        require(config != null);
+        require(voteId > 0L, "voteId error");
+        require(config != null, "config can not null");
 
         onlyOwner(voteId);
 
-        require(config.check());
+        require(config.check(), "the config is error");
 
         VoteEntity voteEntity = votes.get(voteId);
 
-        require(voteEntity != null);
+        require(voteEntity != null, "vote not find");
 
-        require(voteEntity.getStatus() == VoteStatus.STATUS_WAIT_INIT);
+        require(voteEntity.getStatus() == VoteStatus.STATUS_WAIT_INIT, "vote status error");
 
         List<VoteItem> items = voteEntity.getItems();
-        require(items != null && items.size() > 0);
+        require(items != null && items.size() > 0, "vote item can not empty");
 
         if(config.isMultipleSelect()) {
-            require(config.getMaxSelectCount() <= items.size());
+            require(config.getMaxSelectCount() <= items.size(), "max select count can not greater then item size");
         }
 
         voteEntity.setConfig(config);
@@ -102,16 +102,16 @@ public class BaseVote implements VoteInterface {
     public boolean vote(long voteId, long[] itemIds) {
 
         require(canVote(voteId));
-        require(itemIds != null && itemIds.length > 0);
+        require(itemIds != null && itemIds.length > 0, "item id can not empty");
 
         VoteEntity voteEntity = votes.get(voteId);
         VoteConfig config = voteEntity.getConfig();
 
         if(config.isMultipleSelect()) {
-            require(itemIds.length <= config.getMaxSelectCount());
+            require(itemIds.length <= config.getMaxSelectCount(), "option cannot be greater than " + config.getMaxSelectCount());
         }
         if(!config.isMultipleSelect()) {
-            require(itemIds.length == 1);
+            require(itemIds.length == 1, "only support single selection");
         }
 
         List<VoteItem> items = voteEntity.getItems();
@@ -130,7 +130,7 @@ public class BaseVote implements VoteInterface {
             }
 
             if(!hasExist) {
-                require(false);
+                require(false, "entered the wrong item id");
                 return false;
             }
             itemIdList.add(itemId);
@@ -143,7 +143,7 @@ public class BaseVote implements VoteInterface {
         }
 
         if(!voteEntity.getConfig().isVoteCanModify()) {
-            require(records.get(Msg.sender()) == null);
+            require(records.get(Msg.sender()) == null, "already voted");
         }
 
         records.put(Msg.sender(), itemIdList);
@@ -155,23 +155,23 @@ public class BaseVote implements VoteInterface {
 
     public boolean redemption(long voteId) {
 
-        require(voteId > 0L);
+        require(voteId > 0L, "voteId error");
 
         //onlyOwner(voteId);
 
         VoteEntity voteEntity = votes.get(voteId);
 
-        require(voteEntity != null);
+        require(voteEntity != null, "vote is not find");
 
         if(voteEntity.getStatus() != VoteStatus.STATUS_CLOSE) {
             require(!canVote(voteId));
         }
 
-        require(voteEntity.getStatus() == VoteStatus.STATUS_CLOSE);
-        require(voteEntity.getRecognizance().compareTo(BigInteger.ZERO) > 0);
+        require(voteEntity.getStatus() == VoteStatus.STATUS_CLOSE, "vote has not closed");
+        require(voteEntity.getRecognizance().compareTo(BigInteger.ZERO) > 0, "recognizance has been redeemed");
 
         BigInteger balance = Msg.address().balance();
-        require(balance.compareTo(voteEntity.getRecognizance()) >= 0);
+        require(balance.compareTo(voteEntity.getRecognizance()) >= 0, "The contract balance is less than the recognizance amount");
 
 
         // return amount
@@ -184,7 +184,7 @@ public class BaseVote implements VoteInterface {
 
     public boolean canVote(long voteId) {
 
-        require(voteId > 0L);
+        require(voteId > 0L, "voteId error");
 
         VoteEntity voteEntity = votes.get(voteId);
 
@@ -220,11 +220,11 @@ public class BaseVote implements VoteInterface {
 
     public VoteEntity queryVote(long voteId) {
 
-        require(voteId > 0L);
+        require(voteId > 0L, "voteId error");
 
         VoteEntity voteEntity = votes.get(voteId);
 
-        require(voteEntity != null);
+        require(voteEntity != null, "vote is not find");
 
         List<VoteItem> items = voteEntity.getItems();
         voteEntity.setItems(items);
@@ -234,11 +234,11 @@ public class BaseVote implements VoteInterface {
 
     public Map<Address, List<Long>> queryVoteResult(long voteId) {
 
-        require(voteId > 0L);
+        require(voteId > 0L, "voteId error");
 
         VoteEntity voteEntity = votes.get(voteId);
 
-        require(voteEntity != null);
+        require(voteEntity != null, "vote is not find");
 
         Map<Address, List<Long>> records = voteRecords.get(voteId);
 
@@ -246,16 +246,16 @@ public class BaseVote implements VoteInterface {
     }
 
     public boolean queryAddressHasVote(long voteId, Address address) {
-        require(voteId > 0L);
-        require(address != null);
+        require(voteId > 0L, "voteId error");
+        require(address != null, "address is empty");
 
         VoteEntity voteEntity = votes.get(voteId);
 
-        require(voteEntity != null);
+        require(voteEntity != null, "vote is not find");
 
         Map<Address, List<Long>> records = voteRecords.get(voteId);
 
-        require(records != null);
+        require(records != null, "records is null");
 
         return records.get(address) != null;
     }
@@ -265,12 +265,12 @@ public class BaseVote implements VoteInterface {
     }
 
     private void onlyOwner(long voteId) {
-        require(voteId > 0L);
+        require(voteId > 0L, "voteId error");
 
         VoteEntity voteEntity = votes.get(voteId);
 
-        require(voteEntity != null);
+        require(voteEntity != null, "vote is not find");
 
-        require(voteEntity.getOwner().equals(Msg.sender()));
+        require(voteEntity.getOwner().equals(Msg.sender()), "is not owner");
     }
 }

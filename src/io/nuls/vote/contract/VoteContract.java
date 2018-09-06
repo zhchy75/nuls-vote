@@ -33,7 +33,7 @@ public class VoteContract implements Contract {
         VoteConfig config = new VoteConfig(startTime, endTime, isMultipleSelect, maxSelectCount, voteCanModify);
         boolean success = baseVote.init(voteEntity.getId(), config);
 
-        Utils.require(success);
+        Utils.require(success, "vote init fail");
 
         return voteEntity;
     }

@@ -118,7 +118,7 @@ public class VoteEntity {
                 ", desc: \"" + desc + "\"" +
                 ", config: " + config +
                 ", status: " + status +
-                ", owner: " + owner +
+                ", owner: \"" + owner + "\"" +
                 ", recognizance: " + recognizance +
                 ", items: " + items +
                 '}';

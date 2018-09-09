@@ -164,7 +164,7 @@ public class BaseVote implements VoteInterface {
         require(voteEntity != null, "vote is not find");
 
         if(voteEntity.getStatus() != VoteStatus.STATUS_CLOSE) {
-            require(!canVote(voteId));
+            require(!canVote(voteId), "current vote is not over yet");
         }
 
         require(voteEntity.getStatus() == VoteStatus.STATUS_CLOSE, "vote has not closed");
@@ -241,6 +241,10 @@ public class BaseVote implements VoteInterface {
         require(voteEntity != null, "vote is not find");
 
         Map<Address, List<Long>> records = voteRecords.get(voteId);
+
+        if(records == null) {
+            return new HashMap<Address, List<Long>>();
+        }
 
         return records;
     }

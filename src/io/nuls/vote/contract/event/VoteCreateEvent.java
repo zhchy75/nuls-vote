@@ -76,10 +76,10 @@ public class VoteCreateEvent implements Event {
     @Override
     public String toString() {
         return "{" +
-                "voteId: " + voteId +
-                ", title: \"" + title + "\"" +
-                ", desc: \"" + desc + "\"" +
-                ", items: " + items +
+                "\"voteId\": " + voteId +
+                ", \"title\": \"" + title + "\"" +
+                ", \"desc\": \"" + desc + "\"" +
+                ", \"items\": " + items +
                 "}";
     }
 }

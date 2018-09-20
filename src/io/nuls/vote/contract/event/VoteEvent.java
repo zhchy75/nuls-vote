@@ -43,8 +43,8 @@ public class VoteEvent implements Event {
     @Override
     public String toString() {
         return "{" +
-                "voteId: " + voteId +
-                ", itemIds: " + itemIds +
+                "\"voteId\": " + voteId +
+                ", \"itemIds\": " + itemIds +
                 "}";
     }
 }

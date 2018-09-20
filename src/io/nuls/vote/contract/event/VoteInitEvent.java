@@ -42,8 +42,8 @@ public class VoteInitEvent implements Event {
     @Override
     public String toString() {
         return "{" +
-                "voteId: " + voteId +
-                ", voteConfig: " + voteConfig +
+                "\"voteId\": " + voteId +
+                ", \"voteConfig\": " + voteConfig +
                 "}";
     }
 }

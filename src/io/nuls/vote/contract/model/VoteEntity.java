@@ -113,14 +113,14 @@ public class VoteEntity {
     @Override
     public String toString() {
         return "{" +
-                "id: " + id +
-                ", title: \"" + title + "\"" +
-                ", desc: \"" + desc + "\"" +
-                ", config: " + config +
-                ", status: " + status +
-                ", owner: \"" + owner + "\"" +
-                ", recognizance: " + recognizance +
-                ", items: " + items +
+                "\"id\": " + id +
+                ", \"title\": \"" + title + "\"" +
+                ", \"desc\": \"" + desc + "\"" +
+                ", \"config\": " + config +
+                ", \"status\": " + status +
+                ", \"owner\": \"" + owner + "\"" +
+                ", \"recognizance\": " + recognizance +
+                ", \"items\": " + items +
                 '}';
     }
 }

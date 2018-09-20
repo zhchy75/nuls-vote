@@ -114,11 +114,11 @@ public class VoteConfig {
     @Override
     public String toString() {
         return "{" +
-                "startTime: " + startTime +
-                ", endTime: " + endTime +
-                ", isMultipleSelect: " + isMultipleSelect +
-                ", maxSelectCount: " + maxSelectCount +
-                ", voteCanModify: " + voteCanModify +
+                "\"startTime\": " + startTime +
+                ", \"endTime\": " + endTime +
+                ", \"isMultipleSelect\": " + isMultipleSelect +
+                ", \"maxSelectCount\": " + maxSelectCount +
+                ", \"voteCanModify\": " + voteCanModify +
                 "}";
     }
 }

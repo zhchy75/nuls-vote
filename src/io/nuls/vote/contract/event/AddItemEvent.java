@@ -60,10 +60,10 @@ public class AddItemEvent implements Event {
     @Override
     public String toString() {
         return "{" +
-                "voteId: " + voteId +
-                ", itemId: " + itemId +
-                ", itemContent: \"" + itemContent + "\"" +
-                ", items: " + items +
+                "\"voteId\": " + voteId +
+                ", \"itemId\": " + itemId +
+                ", \"itemContent\": \"" + itemContent + "\"" +
+                ", \"items\": " + items +
                 "}";
     }
 }

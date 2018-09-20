@@ -101,7 +101,7 @@ public class BaseVote implements VoteInterface {
 
     public boolean vote(long voteId, long[] itemIds) {
 
-        require(canVote(voteId));
+        require(canVote(voteId), "can not vote, please check.");
         require(itemIds != null && itemIds.length > 0, "item id can not empty");
 
         VoteEntity voteEntity = votes.get(voteId);
